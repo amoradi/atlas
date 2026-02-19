@@ -11,6 +11,7 @@
     "declarationDir": "./dist",
     "outDir": "./dist",
     "rootDir": "./src",
+    "resolveJsonModule": true,
     "types": ["@webgpu/types"]
   },
   "include": ["src/**/*"],

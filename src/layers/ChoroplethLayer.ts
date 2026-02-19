@@ -4,6 +4,7 @@ import { hexToRgba } from '../core/gpu'
 import type { GeoJSON, GeoFeature } from '../core/types'
 import { interpolateColor } from '../themes'
 import earcut from 'earcut'
+import defaultCountries from '../data/countries.json'
 
 export interface ChoroplethValue {
   key: string  // Country code (ISO_A3) or name
@@ -31,9 +32,13 @@ export class ChoroplethLayer extends Layer {
     super(id)
   }
 
-  async loadGeoJSON(url: string): Promise<void> {
-    const response = await fetch(url)
-    this.geoData = await response.json()
+  async loadGeoJSON(url?: string): Promise<void> {
+    if (url) {
+      const response = await fetch(url)
+      this.geoData = await response.json()
+    } else {
+      this.geoData = defaultCountries as GeoJSON
+    }
   }
 
   setGeoJSON(data: GeoJSON): void {
@@ -73,11 +78,12 @@ export class ChoroplethLayer extends Layer {
     const props = feature.properties
     // Try different property names for country identification
     const keys = [
+      props.iso,        // bundled data
       props.ISO_A3,
       props.iso_a3,
       props.ADM0_A3,
+      props.name,       // bundled data
       props.NAME,
-      props.name,
       props.ADMIN
     ].filter(Boolean).map(k => String(k).toUpperCase())
 

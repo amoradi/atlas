@@ -147,9 +147,11 @@ export class Atlas {
     device.queue.submit([commandEncoder.finish()])
   }
 
-  async addCountryLayer(geoJsonUrl: string): Promise<CountryLayer> {
+  async addCountryLayer(geoJsonUrl?: string): Promise<CountryLayer> {
     const layer = new CountryLayer()
-    await layer.loadGeoJSON(geoJsonUrl)
+    if (geoJsonUrl) {
+      await layer.loadGeoJSON(geoJsonUrl)
+    }
     await layer.initialize(this.gpu!)
     this.layers.set(layer.id, layer)
     this.render()
@@ -175,12 +177,11 @@ export class Atlas {
 
   async addChoroplethLayer(
     id: string,
-    geoJsonUrl: string,
     values: ChoroplethValue[],
-    options?: ChoroplethOptions
+    options?: ChoroplethOptions & { geoJsonUrl?: string }
   ): Promise<ChoroplethLayer> {
     const layer = new ChoroplethLayer(id)
-    await layer.loadGeoJSON(geoJsonUrl)
+    await layer.loadGeoJSON(options?.geoJsonUrl)
     await layer.initialize(this.gpu!)
     layer.setValues(values, options)
     this.layers.set(layer.id, layer)

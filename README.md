@@ -29,10 +29,8 @@ const map = new Atlas({
   zoom: 1
 })
 
-// Load country boundaries
-await map.addCountryLayer(
-  'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson'
-)
+// Load country boundaries (bundled data, ~63KB gzipped)
+await map.addCountryLayer()
 
 // Handle clicks
 map.on('click', (e) => {
@@ -45,7 +43,7 @@ map.on('click', (e) => {
 Color countries by value:
 
 ```ts
-await map.addChoroplethLayer('gdp', geoJsonUrl, [
+await map.addChoroplethLayer('gdp', [
   { key: 'USA', value: 25500 },
   { key: 'CHN', value: 18000 },
   { key: 'JPN', value: 4200 },
@@ -56,6 +54,11 @@ await map.addChoroplethLayer('gdp', geoJsonUrl, [
 
 // Update data
 map.updateChoropleth('gdp', newData)
+
+// Use custom GeoJSON (e.g., US states)
+await map.addChoroplethLayer('states', stateData, {
+  geoJsonUrl: 'us-states.geojson'
+})
 ```
 
 ## Points Layer
