@@ -59,8 +59,11 @@ export class CameraController {
   }
 
   private onPointerUp = (e: PointerEvent): void => {
+    if (!this.isDragging) return
     this.isDragging = false
-    this.canvas.releasePointerCapture(e.pointerId)
+    try {
+      this.canvas.releasePointerCapture(e.pointerId)
+    } catch {}
     this.canvas.style.cursor = 'grab'
   }
 
