@@ -41,6 +41,27 @@ const map = new Atlas({
 })
 ```
 
+## Custom GeoJSON
+
+Use any GeoJSON with polygon geometries — not just world maps:
+
+```ts
+// US States
+const map = new Atlas({
+  container: '#map',
+  countries: 'https://example.com/us-states.geojson'
+})
+
+// Color states by data
+await map.addChoroplethLayer('population', stateData, {
+  geoJsonUrl: 'https://example.com/us-states.geojson',
+  colors: ['#eee', '#c00']
+})
+
+// Or load any custom polygons
+await map.addCountryLayer('https://example.com/districts.geojson')
+```
+
 ## Choropleth Layer
 
 Color countries by value:
