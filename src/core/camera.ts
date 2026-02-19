@@ -80,7 +80,7 @@ export class CameraController {
     // Smaller steps for smoother trackpad zooming
     const zoomIntensity = 0.002
     const zoomFactor = 1 - e.deltaY * zoomIntensity
-    const newZoom = Math.max(0.5, Math.min(20, this.camera.zoom * zoomFactor))
+    const newZoom = Math.max(1, Math.min(20, this.camera.zoom * zoomFactor))
 
     // Zoom towards mouse position
     const rect = this.canvas.getBoundingClientRect()
@@ -118,7 +118,7 @@ export class CameraController {
       const dy = e.touches[0].clientY - e.touches[1].clientY
       const distance = Math.sqrt(dx * dx + dy * dy)
       const scale = distance / this.touchStartDistance
-      this.camera.zoom = Math.max(0.5, Math.min(20, this.touchStartZoom * scale))
+      this.camera.zoom = Math.max(1, Math.min(20, this.touchStartZoom * scale))
       this.onChange()
     }
   }
@@ -171,7 +171,7 @@ export class CameraController {
   }
 
   setZoom(zoom: number): void {
-    this.camera.zoom = Math.max(0.5, Math.min(20, zoom))
+    this.camera.zoom = Math.max(1, Math.min(20, zoom))
     this.onChange()
   }
 

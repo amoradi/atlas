@@ -1,5 +1,5 @@
 {
-  "name": "atlas",
+  "name": "@amoradi/atlas",
   "version": "0.1.0",
   "description": "A lightweight WebGPU-powered world map renderer",
   "type": "module",
@@ -27,10 +27,20 @@
     "map",
     "geography",
     "visualization",
-    "canvas"
+    "canvas",
+    "choropleth",
+    "geospatial"
   ],
-  "author": "",
+  "author": "amoradi",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/amoradi/atlas.git"
+  },
+  "homepage": "https://github.com/amoradi/atlas",
+  "bugs": {
+    "url": "https://github.com/amoradi/atlas/issues"
+  },
   "devDependencies": {
     "@types/earcut": "^3.0.0",
     "@webgpu/types": "^0.1.40",
