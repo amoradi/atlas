@@ -67,6 +67,14 @@ export class Atlas {
 
     this.initialized = true
 
+    // Auto-load countries if specified
+    if (options.countries) {
+      const url = typeof options.countries === 'string'
+        ? options.countries
+        : 'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson'
+      await this.addCountryLayer(url)
+    }
+
     // Start render loop
     this.render()
   }

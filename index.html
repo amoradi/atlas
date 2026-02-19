@@ -92,7 +92,8 @@
       container: '#map',
       theme: 'dark',
       center: [0, 20],
-      zoom: 1
+      zoom: 1,
+      countries: true
     })
 
     // Sample GDP data (2023, in billions USD)
@@ -121,11 +122,6 @@
 
     let showData = false
     let choroplethLayer = null
-
-    // Load country layer
-    map.addCountryLayer(GEO_URL).then(() => {
-      console.log('Countries loaded!')
-    })
 
     // Click handler
     map.on('click', (e) => {

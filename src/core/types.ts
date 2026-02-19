@@ -5,6 +5,7 @@ export interface AtlasOptions {
   zoom?: number
   minZoom?: number
   maxZoom?: number
+  countries?: string | boolean // URL or true for default Natural Earth 110m
 }
 
 export type ThemeName = 'light' | 'dark'

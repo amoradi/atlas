@@ -24,18 +24,20 @@ import { Atlas } from 'atlas'
 
 const map = new Atlas({
   container: '#map',
-  theme: 'dark',
-  center: [0, 20],
-  zoom: 1
+  countries: true  // loads Natural Earth 110m
 })
-
-// Load country boundaries (Natural Earth 110m)
-await map.addCountryLayer(
-  'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson'
-)
 
 map.on('click', (e) => {
   console.log('Clicked:', e.lngLat)
+})
+```
+
+Or with a custom GeoJSON URL:
+
+```ts
+const map = new Atlas({
+  container: '#map',
+  countries: 'https://example.com/countries.geojson'
 })
 ```
 
