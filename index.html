@@ -76,6 +76,7 @@
     <button onclick="zoomIn()">+</button>
     <button onclick="zoomOut()">−</button>
     <button id="theme-toggle" onclick="toggleTheme()">☀</button>
+    <button id="data-toggle" onclick="toggleData()">◐</button>
   </div>
 
   <div class="info">
@@ -95,6 +96,33 @@
       zoom: 1
     })
 
+    // Sample GDP data (2023, in billions USD)
+    const gdpData = [
+      { key: 'USA', value: 25500 },
+      { key: 'CHN', value: 18000 },
+      { key: 'JPN', value: 4200 },
+      { key: 'DEU', value: 4100 },
+      { key: 'IND', value: 3500 },
+      { key: 'GBR', value: 3100 },
+      { key: 'FRA', value: 2800 },
+      { key: 'BRA', value: 2100 },
+      { key: 'ITA', value: 2000 },
+      { key: 'CAN', value: 1900 },
+      { key: 'RUS', value: 1800 },
+      { key: 'KOR', value: 1700 },
+      { key: 'AUS', value: 1600 },
+      { key: 'MEX', value: 1400 },
+      { key: 'ESP', value: 1400 },
+      { key: 'IDN', value: 1300 },
+      { key: 'SAU', value: 1100 },
+      { key: 'NLD', value: 1000 },
+      { key: 'TUR', value: 900 },
+      { key: 'CHE', value: 800 },
+    ]
+
+    let showData = false
+    let choroplethLayer = null
+
     // Load country layer
     map.addCountryLayer(GEO_URL).then(() => {
       console.log('Countries loaded!')
@@ -112,6 +140,27 @@
       isDark = !isDark
       map.setTheme(isDark ? 'dark' : 'light')
       document.getElementById('theme-toggle').textContent = isDark ? '☀' : '☾'
+    }
+    window.toggleData = async () => {
+      showData = !showData
+      if (showData) {
+        if (!choroplethLayer) {
+          choroplethLayer = await map.addChoroplethLayer('gdp', GEO_URL, gdpData, {
+            colors: ['#1f2833', '#66fcf1'],
+            defaultColor: '#1f2833'
+          })
+        } else {
+          choroplethLayer.setVisible(true)
+          map.refresh()
+        }
+        document.getElementById('data-toggle').textContent = '◑'
+      } else {
+        if (choroplethLayer) {
+          choroplethLayer.setVisible(false)
+          map.refresh()
+        }
+        document.getElementById('data-toggle').textContent = '◐'
+      }
     }
     window.zoomIn = () => map.setZoom((map.getZoom() || 1) * 1.5)
     window.zoomOut = () => map.setZoom((map.getZoom() || 1) / 1.5)

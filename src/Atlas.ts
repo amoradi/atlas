@@ -4,6 +4,8 @@ import type { AtlasOptions, Theme, ThemeName, AtlasEvent } from './core/types'
 import { getTheme } from './themes'
 import { Layer, type LayerRenderContext } from './layers/Layer'
 import { CountryLayer } from './layers/CountryLayer'
+import { PointsLayer, type PointData } from './layers/PointsLayer'
+import { ChoroplethLayer, type ChoroplethValue, type ChoroplethOptions } from './layers/ChoroplethLayer'
 
 type EventCallback = (event: AtlasEvent) => void
 
@@ -146,6 +148,46 @@ export class Atlas {
     return layer
   }
 
+  async addPointsLayer(id: string, points: PointData[]): Promise<PointsLayer> {
+    const layer = new PointsLayer(id)
+    layer.setPoints(points)
+    await layer.initialize(this.gpu!)
+    this.layers.set(layer.id, layer)
+    this.render()
+    return layer
+  }
+
+  updatePoints(layerId: string, points: PointData[]): void {
+    const layer = this.layers.get(layerId)
+    if (layer instanceof PointsLayer) {
+      layer.setPoints(points)
+      this.render()
+    }
+  }
+
+  async addChoroplethLayer(
+    id: string,
+    geoJsonUrl: string,
+    values: ChoroplethValue[],
+    options?: ChoroplethOptions
+  ): Promise<ChoroplethLayer> {
+    const layer = new ChoroplethLayer(id)
+    await layer.loadGeoJSON(geoJsonUrl)
+    await layer.initialize(this.gpu!)
+    layer.setValues(values, options)
+    this.layers.set(layer.id, layer)
+    this.render()
+    return layer
+  }
+
+  updateChoropleth(layerId: string, values: ChoroplethValue[], options?: ChoroplethOptions): void {
+    const layer = this.layers.get(layerId)
+    if (layer instanceof ChoroplethLayer) {
+      layer.setValues(values, options)
+      this.render()
+    }
+  }
+
   addLayer(layer: Layer): void {
     this.layers.set(layer.id, layer)
     if (this.gpu) {
@@ -186,6 +228,10 @@ export class Atlas {
 
   getZoom(): number | null {
     return this.camera?.camera.zoom ?? null
+  }
+
+  refresh(): void {
+    this.render()
   }
 
   on(event: string, callback: EventCallback): void {
