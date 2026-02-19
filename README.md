@@ -10,7 +10,6 @@ A lightweight WebGPU-powered world map renderer.
 - **Choropleth** — color countries by data values (GDP, population, etc.)
 - **Points layer** — render markers at coordinates
 - **TypeScript** — full type definitions included
-- **Zero config** — bundled country boundaries (~63KB gzipped)
 
 ## Installation
 
@@ -23,15 +22,6 @@ npm install atlas
 ```ts
 import { Atlas } from 'atlas'
 
-const map = new Atlas({ container: '#map' })
-await map.addCountryLayer()
-```
-
-That's it — bundled country data loads automatically.
-
-### With options
-
-```ts
 const map = new Atlas({
   container: '#map',
   theme: 'dark',
@@ -39,23 +29,14 @@ const map = new Atlas({
   zoom: 1
 })
 
-await map.addCountryLayer()
+// Load country boundaries (Natural Earth 110m)
+await map.addCountryLayer(
+  'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson'
+)
 
 map.on('click', (e) => {
   console.log('Clicked:', e.lngLat)
 })
-```
-
-### Custom GeoJSON
-
-```ts
-// Use your own country boundaries
-await map.addCountryLayer('https://example.com/countries.geojson')
-
-// Or higher resolution Natural Earth data
-await map.addCountryLayer(
-  'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_admin_0_countries.geojson'
-)
 ```
 
 ## Choropleth Layer
@@ -63,22 +44,14 @@ await map.addCountryLayer(
 Color countries by value:
 
 ```ts
-await map.addChoroplethLayer('gdp', [
-  { key: 'USA', value: 25500 },
-  { key: 'CHN', value: 18000 },
-  { key: 'JPN', value: 4200 },
-], {
+await map.addChoroplethLayer('gdp', gdpData, {
+  geoJsonUrl: 'countries.geojson',
   colors: ['#2a3a45', '#4a6868'],
   defaultColor: '#2a3a45'
 })
 
-// Update data
+// Update data dynamically
 map.updateChoropleth('gdp', newData)
-
-// Use custom GeoJSON (e.g., US states)
-await map.addChoroplethLayer('states', stateData, {
-  geoJsonUrl: 'us-states.geojson'
-})
 ```
 
 ## Points Layer

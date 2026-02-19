@@ -4,7 +4,6 @@ import { hexToRgba } from '../core/gpu'
 import type { GeoJSON, GeoFeature } from '../core/types'
 import { interpolateColor } from '../themes'
 import earcut from 'earcut'
-import defaultCountries from '../data/countries.json'
 
 export interface ChoroplethValue {
   key: string  // Country code (ISO_A3) or name
@@ -188,11 +187,6 @@ export class ChoroplethLayer extends Layer {
 
   async initialize(gpu: GPUContext): Promise<void> {
     this.gpu = gpu
-
-    // Use bundled data if none provided
-    if (!this.geoData) {
-      this.geoData = defaultCountries as GeoJSON
-    }
 
     // Create uniform buffer for view matrix
     this.uniformBuffer = gpu.device.createBuffer({

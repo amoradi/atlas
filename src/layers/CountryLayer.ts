@@ -4,7 +4,6 @@ import { createBuffer, hexToRgba } from '../core/gpu'
 import { polygonShader } from '../core/shaders'
 import type { GeoJSON, GeoFeature } from '../core/types'
 import earcut from 'earcut'
-import defaultCountries from '../data/countries.json'
 
 export class CountryLayer extends Layer {
   private vertexBuffer: GPUBuffer | null = null
@@ -34,9 +33,8 @@ export class CountryLayer extends Layer {
   async initialize(gpu: GPUContext): Promise<void> {
     this.gpu = gpu
 
-    // Use bundled data if none provided
     if (!this.geoData) {
-      this.geoData = defaultCountries as GeoJSON
+      throw new Error('GeoJSON data not loaded')
     }
 
     // Triangulate all country polygons

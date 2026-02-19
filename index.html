@@ -86,6 +86,8 @@
   <script type="module">
     import { Atlas } from './src/index.ts'
 
+    const GEO_URL = 'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson'
+
     const map = new Atlas({
       container: '#map',
       theme: 'dark',
@@ -120,8 +122,8 @@
     let showData = false
     let choroplethLayer = null
 
-    // Load country layer (uses bundled data)
-    map.addCountryLayer().then(() => {
+    // Load country layer
+    map.addCountryLayer(GEO_URL).then(() => {
       console.log('Countries loaded!')
     })
 
@@ -159,6 +161,7 @@
       if (showData) {
         if (!choroplethLayer) {
           choroplethLayer = await map.addChoroplethLayer('gdp', gdpData, {
+            geoJsonUrl: GEO_URL,
             colors,
             defaultColor
           })
