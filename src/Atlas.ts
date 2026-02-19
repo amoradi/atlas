@@ -129,9 +129,16 @@ export class Atlas {
       theme: this.theme
     }
 
-    // Render all layers
+    // Render all layer fills
     for (const layer of this.layers.values()) {
       layer.render(ctx, passEncoder)
+    }
+
+    // Render borders on top of everything
+    for (const layer of this.layers.values()) {
+      if (layer instanceof CountryLayer) {
+        layer.renderBorders(ctx, passEncoder)
+      }
     }
 
     passEncoder.end()
