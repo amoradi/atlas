@@ -129,6 +129,7 @@ export class Atlas {
       theme: this.theme
     }
 
+    // Render all layers
     for (const layer of this.layers.values()) {
       layer.render(ctx, passEncoder)
     }

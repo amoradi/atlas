@@ -11,8 +11,8 @@ export const themes: Record<ThemeName, Theme> = {
   },
   dark: {
     background: '#0b0c10',
-    land: '#2a3a4a',
-    borders: '#45a29e',
+    land: '#1f2833',
+    borders: '#0f1318',
     water: '#0b0c10',
     labels: '#c5c6c7',
     points: '#66fcf1'

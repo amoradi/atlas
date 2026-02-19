@@ -136,20 +136,37 @@
 
     // Expose functions for buttons
     let isDark = true
+
+    const getChoroplethStyle = () => {
+      const colors = isDark
+        ? ['#2a3a45', '#4a6868']
+        : ['#f0e2d5', '#E8CDA9']
+      return { colors, defaultColor: colors[0] }
+    }
+
     window.toggleTheme = () => {
       isDark = !isDark
       map.setTheme(isDark ? 'dark' : 'light')
       document.getElementById('theme-toggle').textContent = isDark ? '☀' : '☾'
+      // Update choropleth colors for new theme
+      if (showData && choroplethLayer) {
+        const { colors, defaultColor } = getChoroplethStyle()
+        choroplethLayer.setValues(gdpData, { colors, defaultColor })
+        map.refresh()
+      }
     }
     window.toggleData = async () => {
       showData = !showData
+      const { colors, defaultColor } = getChoroplethStyle()
+
       if (showData) {
         if (!choroplethLayer) {
           choroplethLayer = await map.addChoroplethLayer('gdp', GEO_URL, gdpData, {
-            colors: ['#1f2833', '#66fcf1'],
-            defaultColor: '#1f2833'
+            colors,
+            defaultColor
           })
         } else {
+          choroplethLayer.setValues(gdpData, { colors, defaultColor })
           choroplethLayer.setVisible(true)
           map.refresh()
         }

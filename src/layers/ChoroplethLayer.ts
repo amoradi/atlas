@@ -84,9 +84,11 @@ export class ChoroplethLayer extends Layer {
     for (const key of keys) {
       if (this.values.has(key)) {
         const value = this.values.get(key)!
-        const t = this.maxValue !== this.minValue
+        const rawT = this.maxValue !== this.minValue
           ? (value - this.minValue) / (this.maxValue - this.minValue)
           : 0.5
+        // Compress range to 0.25-0.75 for less extreme colors
+        const t = 0.25 + rawT * 0.5
         const color = interpolateColor(this.colors[0], this.colors[1], t)
         const rgba = hexToRgba(color)
         rgba[3] *= this.opacity
