@@ -2,36 +2,20 @@ import type { Theme, ThemeName } from '../core/types'
 
 export const themes: Record<ThemeName, Theme> = {
   light: {
-    background: '#e6e8e6',
-    land: '#f5f5f5',
-    borders: '#cccccc',
-    water: '#a8d5e5',
-    labels: '#333333',
-    points: '#e74c3c'
+    background: '#d4c4a8',
+    land: '#e8dcc8',
+    borders: '#b8a888',
+    water: '#c9b896',
+    labels: '#5c4a32',
+    points: '#8b4513'
   },
   dark: {
-    background: '#1a1a2e',
-    land: '#16213e',
-    borders: '#0f3460',
-    water: '#0a0a0a',
-    labels: '#eaeaea',
-    points: '#e94560'
-  },
-  satellite: {
     background: '#0b0c10',
-    land: '#1f2833',
+    land: '#2a3a4a',
     borders: '#45a29e',
     water: '#0b0c10',
     labels: '#c5c6c7',
     points: '#66fcf1'
-  },
-  minimal: {
-    background: '#ffffff',
-    land: '#fafafa',
-    borders: '#e0e0e0',
-    water: '#ffffff',
-    labels: '#424242',
-    points: '#1976d2'
   }
 }
 

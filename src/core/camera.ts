@@ -19,6 +19,7 @@ export class CameraController {
     this.canvas = canvas
     this.onChange = onChange
     this.setupEventListeners()
+    this.canvas.style.cursor = 'grab'
   }
 
   private setupEventListeners(): void {
@@ -38,6 +39,7 @@ export class CameraController {
     this.isDragging = true
     this.lastPointer = { x: e.clientX, y: e.clientY }
     this.canvas.setPointerCapture(e.pointerId)
+    this.canvas.style.cursor = 'grabbing'
   }
 
   private onPointerMove = (e: PointerEvent): void => {
@@ -59,12 +61,25 @@ export class CameraController {
   private onPointerUp = (e: PointerEvent): void => {
     this.isDragging = false
     this.canvas.releasePointerCapture(e.pointerId)
+    this.canvas.style.cursor = 'grab'
   }
 
   private onWheel = (e: WheelEvent): void => {
     e.preventDefault()
 
-    const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1
+    // Handle horizontal panning (trackpad swipe)
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY) || e.shiftKey) {
+      const scale = this.getScale()
+      this.camera.x += e.deltaX / scale
+      this.camera.y -= e.deltaY / scale
+      this.clampCamera()
+      this.onChange()
+      return
+    }
+
+    // Smaller steps for smoother trackpad zooming
+    const zoomIntensity = 0.002
+    const zoomFactor = 1 - e.deltaY * zoomIntensity
     const newZoom = Math.max(0.5, Math.min(20, this.camera.zoom * zoomFactor))
 
     // Zoom towards mouse position

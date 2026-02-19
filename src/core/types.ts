@@ -7,7 +7,7 @@ export interface AtlasOptions {
   maxZoom?: number
 }
 
-export type ThemeName = 'light' | 'dark' | 'satellite' | 'minimal'
+export type ThemeName = 'light' | 'dark'
 
 export interface Theme {
   background: string
