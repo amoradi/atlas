@@ -1,0 +1,8 @@
+# Demo files
+atlas-demo.mov
+atlas-demo.mp4
+atlas-demo.gif
+
+# Development
+*.log
+.DS_Store

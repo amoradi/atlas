@@ -2,6 +2,8 @@
 
 A lightweight WebGPU-powered world map renderer.
 
+![Atlas Demo](atlas-demo.gif)
+
 ## Features
 
 - **WebGPU rendering** — fast, GPU-accelerated map drawing
@@ -14,13 +16,13 @@ A lightweight WebGPU-powered world map renderer.
 ## Installation
 
 ```bash
-npm install atlas
+npm install @amoradi/atlas
 ```
 
 ## Quick Start
 
 ```ts
-import { Atlas } from 'atlas'
+import { Atlas } from '@amoradi/atlas'
 
 const map = new Atlas({
   container: '#map',
