@@ -46,6 +46,18 @@ map.on('click', (e) => {
 })
 ```
 
+### Custom GeoJSON
+
+```ts
+// Use your own country boundaries
+await map.addCountryLayer('https://example.com/countries.geojson')
+
+// Or higher resolution Natural Earth data
+await map.addCountryLayer(
+  'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_admin_0_countries.geojson'
+)
+```
+
 ## Choropleth Layer
 
 Color countries by value:
