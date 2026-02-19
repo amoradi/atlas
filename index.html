@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atlas - WebGPU World Map</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #1a1a2e;
+      color: #fff;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    #map {
+      width: 100%;
+      height: 100%;
+    }
+
+    .controls {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 100;
+    }
+
+    .controls button {
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+
+    .controls button:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .zoom-controls {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      z-index: 100;
+    }
+
+    .zoom-controls button {
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .zoom-controls button:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .info {
+      position: fixed;
+      bottom: 16px;
+      left: 16px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 12px 16px;
+      border-radius: 4px;
+      font-size: 13px;
+      z-index: 100;
+    }
+
+    .info code {
+      color: #66fcf1;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <div class="controls">
+    <button onclick="setTheme('dark')">Dark</button>
+    <button onclick="setTheme('light')">Light</button>
+    <button onclick="setTheme('satellite')">Satellite</button>
+    <button onclick="setTheme('minimal')">Minimal</button>
+  </div>
+
+  <div class="zoom-controls">
+    <button onclick="zoomIn()">+</button>
+    <button onclick="zoomOut()">−</button>
+  </div>
+
+  <div class="info">
+    Click anywhere: <code id="coords">-</code>
+  </div>
+
+  <script type="module">
+    import { Atlas } from './src/index.ts'
+
+    // Natural Earth GeoJSON (low-res countries)
+    const GEO_URL = 'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson'
+
+    const map = new Atlas({
+      container: '#map',
+      theme: 'dark',
+      center: [0, 20],
+      zoom: 1
+    })
+
+    // Load country layer
+    map.addCountryLayer(GEO_URL).then(() => {
+      console.log('Countries loaded!')
+    })
+
+    // Click handler
+    map.on('click', (e) => {
+      document.getElementById('coords').textContent =
+        `${e.lngLat[0].toFixed(2)}, ${e.lngLat[1].toFixed(2)}`
+    })
+
+    // Expose functions for buttons
+    window.setTheme = (theme) => map.setTheme(theme)
+    window.zoomIn = () => map.setZoom((map.getZoom() || 1) * 1.5)
+    window.zoomOut = () => map.setZoom((map.getZoom() || 1) / 1.5)
+    window.map = map
+  </script>
+</body>
+</html>
