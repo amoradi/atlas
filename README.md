@@ -10,6 +10,7 @@ A lightweight WebGPU-powered world map renderer.
 - **Choropleth** — color countries by data values (GDP, population, etc.)
 - **Points layer** — render markers at coordinates
 - **TypeScript** — full type definitions included
+- **Zero config** — bundled country boundaries (~63KB gzipped)
 
 ## Installation
 
@@ -22,6 +23,15 @@ npm install atlas
 ```ts
 import { Atlas } from 'atlas'
 
+const map = new Atlas({ container: '#map' })
+await map.addCountryLayer()
+```
+
+That's it — bundled country data loads automatically.
+
+### With options
+
+```ts
 const map = new Atlas({
   container: '#map',
   theme: 'dark',
@@ -29,10 +39,8 @@ const map = new Atlas({
   zoom: 1
 })
 
-// Load country boundaries (bundled data, ~63KB gzipped)
 await map.addCountryLayer()
 
-// Handle clicks
 map.on('click', (e) => {
   console.log('Clicked:', e.lngLat)
 })

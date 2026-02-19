@@ -181,7 +181,9 @@ export class Atlas {
     options?: ChoroplethOptions & { geoJsonUrl?: string }
   ): Promise<ChoroplethLayer> {
     const layer = new ChoroplethLayer(id)
-    await layer.loadGeoJSON(options?.geoJsonUrl)
+    if (options?.geoJsonUrl) {
+      await layer.loadGeoJSON(options.geoJsonUrl)
+    }
     await layer.initialize(this.gpu!)
     layer.setValues(values, options)
     this.layers.set(layer.id, layer)

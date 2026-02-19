@@ -32,13 +32,9 @@ export class ChoroplethLayer extends Layer {
     super(id)
   }
 
-  async loadGeoJSON(url?: string): Promise<void> {
-    if (url) {
-      const response = await fetch(url)
-      this.geoData = await response.json()
-    } else {
-      this.geoData = defaultCountries as GeoJSON
-    }
+  async loadGeoJSON(url: string): Promise<void> {
+    const response = await fetch(url)
+    this.geoData = await response.json()
   }
 
   setGeoJSON(data: GeoJSON): void {
@@ -192,6 +188,11 @@ export class ChoroplethLayer extends Layer {
 
   async initialize(gpu: GPUContext): Promise<void> {
     this.gpu = gpu
+
+    // Use bundled data if none provided
+    if (!this.geoData) {
+      this.geoData = defaultCountries as GeoJSON
+    }
 
     // Create uniform buffer for view matrix
     this.uniformBuffer = gpu.device.createBuffer({

@@ -22,13 +22,9 @@ export class CountryLayer extends Layer {
     super('countries')
   }
 
-  async loadGeoJSON(url?: string): Promise<void> {
-    if (url) {
-      const response = await fetch(url)
-      this.geoData = await response.json()
-    } else {
-      this.geoData = defaultCountries as GeoJSON
-    }
+  async loadGeoJSON(url: string): Promise<void> {
+    const response = await fetch(url)
+    this.geoData = await response.json()
   }
 
   setGeoJSON(data: GeoJSON): void {
